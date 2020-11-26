@@ -1,4 +1,4 @@
-__version__ = "3.7.13"
+__version__ = "3.7.14-dev0"
 
 
 import asyncio
@@ -937,7 +937,6 @@ class ModmailBot(commands.Bot):
         invoked_prefix = self.prefix
         invoker = None
 
-        # Check if there is any aliases being called.
         if self.config.get("use_regex_autotrigger"):
             trigger = next(
                 filter(lambda x: re.match(x, message.content), self.auto_triggers.keys())
@@ -1502,7 +1501,8 @@ class ModmailBot(commands.Bot):
                     )
                     logger.info("Bot has been updated.")
                     channel = self.log_channel
-                    await channel.send(embed=embed)
+                    if self.bot.config["update_notifications"]:
+                        await channel.send(embed=embed)
             else:
                 try:
                     # update fork if gh_token exists
@@ -1527,14 +1527,22 @@ class ModmailBot(commands.Bot):
                     channel = self.update_channel
                     if self.hosting_method == HostingMethod.PM2:
                         embed = discord.Embed(title="Bot has been updated", color=self.main_color)
-                        await channel.send(embed=embed)
+                        embed.set_footer(
+                            text=f"Updating Modmail v{self.version} " f"-> v{latest.version}"
+                        )
+                        if self.bot.config["update_notifications"]:
+                            await channel.send(embed=embed)
                     else:
                         embed = discord.Embed(
                             title="Bot has been updated and is logging out.",
                             description="If you do not have an auto-restart setup, please manually start the bot.",
                             color=self.main_color,
                         )
-                        await channel.send(embed=embed)
+                        embed.set_footer(
+                            text=f"Updating Modmail v{self.version} " f"-> v{latest.version}"
+                        )
+                        if self.bot.config["update_notifications"]:
+                            await channel.send(embed=embed)
                     await self.logout()
 
     async def before_autoupdate(self):

@@ -6,6 +6,25 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 This project mostly adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html);
 however, insignificant breaking changes do not guarantee a major version bump, see the reasoning [here](https://github.com/kyb3r/modmail/issues/319). If you're a plugin developer, note the "BREAKING" section.
 
+# v3.7.14-dev0
+
+### Added
+
+- `update_notifications` configuration option to toggle bot autoupdate notifications. ([GH #2896](https://github.com/kyb3r/modmail/issues/2896))
+
+### Improved
+
+- Added command validation to `autotrigger add/edit`.
+
+### Fixed
+
+- Mentioned `competing` as an activity type. ([PR #2902](https://github.com/kyb3r/modmail/pull/2902))
+- Level permissions were not checked if command permissions were set.
+
+### Internal
+
+- Make use of `git branch --show-current` to retrieve branch insteasd of using prerelease version check.
+
 # v3.7.13
 
 ### Fixed
